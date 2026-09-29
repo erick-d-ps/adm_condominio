@@ -1,0 +1,2 @@
+-- No resident or employee credentials are stored in seed data.
+-- After creating the employee in Authentication > Users, run `npm run setup:employee`.
