@@ -8,6 +8,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "next start",
+    "prepare": "husky",
     "setup:employee": "node --env-file=.env scripts/provision-employee.mjs"
   },
   "dependencies": {
@@ -29,6 +30,8 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
@@ -38,8 +41,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
