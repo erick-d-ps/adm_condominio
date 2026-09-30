@@ -1,6 +1,8 @@
 # CondoManager
 
-Sistema de gestão de ocorrências do Residencial Aurora. A especificação funcional está em [`docs/prd/condominio-web.md`](docs/prd/condominio-web.md) e a identidade visual em [`docs/DESIGN.md`](docs/DESIGN.md).
+Última atualização: 2026-09-30
+
+Sistema de gestão de ocorrências do Residencial Aurora. A visão do produto está em [`docs/project-overview.md`](docs/project-overview.md), a arquitetura em [`docs/architecture.md`](docs/architecture.md), a especificação funcional em [`docs/prd/condominio-web.md`](docs/prd/condominio-web.md) e a identidade visual em [`docs/DESIGN.md`](docs/DESIGN.md).
 
 ## Requisitos
 
@@ -14,53 +16,53 @@ No PowerShell, use `npm.cmd` e `npx.cmd` caso a política de execução bloqueie
 
 1. Instale as dependências:
 
-	```bash
-	npm ci
-	```
+   ```bash
+   npm ci
+   ```
 
 2. Inicie o Supabase local:
 
-	```bash
-	npx supabase start
-	```
+   ```bash
+   npx supabase start
+   ```
 
-	O CLI mostra a URL local, a chave publishable e a secret key. A stack local inclui Auth, Postgres e Storage.
+   O CLI mostra a URL local, a chave publishable e a secret key. A stack local inclui Auth, Postgres e Storage.
 
 3. Crie `.env` na raiz, sem versioná-lo:
 
-	```dotenv
-	NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
-	NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
-	SUPABASE_SECRET_KEY=
-	```
+   ```dotenv
+   NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+   SUPABASE_SECRET_KEY=
+   ```
 
-	Essas variáveis só conectam a aplicação ao projeto. O e-mail e a senha do funcionário não ficam no `.env`: a conta é criada em Authentication > Users, no painel do Supabase. Nunca use `SUPABASE_SECRET_KEY` em código client-side.
+   Essas variáveis só conectam a aplicação ao projeto. O e-mail e a senha do funcionário não ficam no `.env`: a conta é criada em Authentication > Users, no painel do Supabase. Nunca use `SUPABASE_SECRET_KEY` em código client-side.
 
 4. Aplique as migrations e o seed local:
 
-	```bash
-	npx supabase db reset
-	```
+   ```bash
+   npx supabase db reset
+   ```
 
-	Todo arquivo SQL do banco fica em `supabase/`: migrations timestampadas em `supabase/migrations/`, dados locais em `supabase/seed.sql` e testes pgTAP em `supabase/tests/`. O seed não contém usuários nem credenciais.
+   Todo arquivo SQL do banco fica em `supabase/`: migrations timestampadas em `supabase/migrations/`, dados locais em `supabase/seed.sql` e testes pgTAP em `supabase/tests/`. O seed não contém usuários nem credenciais.
 
 5. Crie o funcionário em Authentication > Users, com e-mail confirmado e senha definida no painel. Depois vincule o perfil:
 
-	```bash
-	npm run setup:employee
-	```
+   ```bash
+   npm run setup:employee
+   ```
 
-	O script não lê e-mail nem senha do `.env`. Ele consulta Authentication > Users e cria `public.profiles` com papel `employee` apenas para contas que ainda não têm perfil. Contas que já são moradores são ignoradas. Não adicione usuários nem senhas ao seed ou a uma migration.
+   O script não lê e-mail nem senha do `.env`. Ele consulta Authentication > Users e cria `public.profiles` com papel `employee` apenas para contas que ainda não têm perfil. Contas que já são moradores são ignoradas. Não adicione usuários nem senhas ao seed ou a uma migration.
 
 6. Inicie a aplicação:
 
-	```bash
-	npm run dev
-	```
+   ```bash
+   npm run dev
+   ```
 
-	Acesse `http://localhost:3000/funcionario/login`. Para cadastrar morador, informe também uma senha inicial com pelo menos 12 caracteres e compartilhe-a por um canal seguro. O morador entra em `/morador/acesso` com e-mail e senha. Como a equipe define a senha e não há troca obrigatória no primeiro acesso, quem a conhece pode entrar como o morador.
+   Acesse `http://localhost:3000/funcionario/login`. Para cadastrar morador, informe também uma senha inicial com pelo menos 12 caracteres e compartilhe-a por um canal seguro. O morador entra em `/morador/acesso` com e-mail e senha. Como a equipe define a senha e não há troca obrigatória no primeiro acesso, quem a conhece pode entrar como o morador.
 
-	Moradores cadastrados antes desta alteração não têm senha definida. Para cada conta existente, defina uma senha no painel Supabase em Authentication > Users antes de usar o novo login.
+   Moradores cadastrados antes desta alteração não têm senha definida. Para cada conta existente, defina uma senha no painel Supabase em Authentication > Users antes de usar o novo login.
 
 ## Banco e testes
 

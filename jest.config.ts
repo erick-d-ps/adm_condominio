@@ -6,6 +6,9 @@ const createJestConfig = nextJest({ dir: "./" });
 const config: Config = {
   clearMocks: true,
   coverageProvider: "v8",
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx|mjs)$": ["babel-jest", { presets: ["next/babel"] }],
+  },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
