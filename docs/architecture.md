@@ -1,6 +1,6 @@
 # Arquitetura
 
-Última atualização: 2026-09-30
+Última atualização: 2026-10-01
 
 Visão técnica do CondoManager. O que o produto faz está em [project-overview.md](project-overview.md). Como subir o ambiente está no [README](../README.md).
 
@@ -68,7 +68,7 @@ O schema `private` guarda helpers (`current_app_role`, `is_app_user`, `is_employ
 
 ## Autorização
 
-RLS está ligada em todas as tabelas expostas. Seleção de ocorrências, fotos e comentários exige `private.is_app_user()`. Insert de ocorrência exige o papel correspondente e `author_profile_id = auth.uid()`. Update de título, descrição, categoria e local só passa se `can_edit_occurrence` for verdadeiro (autor, Pendente, não excluída). Morador só insere comentário na ocorrência que criou; funcionário insere em qualquer uma não excluída.
+RLS está ligada em todas as tabelas expostas. Seleção de ocorrências, fotos e comentários exige `private.is_app_user()`. Insert de ocorrência exige o papel correspondente e `author_profile_id = auth.uid()`. Update de título, descrição, categoria e local só passa se `can_edit_occurrence` for verdadeiro (autor, Pendente, não excluída). Morador e funcionário ativos inserem comentário em qualquer ocorrência não excluída, sempre com `author_profile_id = auth.uid()`. Só o autor exclui o próprio comentário, e a ocorrência precisa continuar visível. Não há policy de update para comentário.
 
 Cadastro de morador não passa por policy de insert em `profiles`/`residents`: a action de funcionário usa o cliente admin depois de confirmar o papel.
 

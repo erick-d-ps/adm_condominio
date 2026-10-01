@@ -26,3 +26,23 @@ export const occurrenceStatusLabels: Record<OccurrenceStatus, string> = {
   in_review: "Em análise",
   resolved: "Resolvido",
 };
+
+export const unknownAuthorLabel = "Usuário do condomínio";
+
+type AuthorRole = "employee" | "resident";
+
+export function formatOccurrenceAuthorLabel(
+  role: AuthorRole | null,
+  name: string | null
+): string {
+  if (!name || role === null) return unknownAuthorLabel;
+  return role === "resident" ? `Morador: ${name}` : `Administração: ${name}`;
+}
+
+export function formatCommentAuthorLabel(
+  role: AuthorRole | null,
+  name: string | null
+): string {
+  if (!name || role === null) return unknownAuthorLabel;
+  return role === "employee" ? `Administração: ${name}` : name;
+}

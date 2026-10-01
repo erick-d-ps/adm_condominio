@@ -1,6 +1,6 @@
 # CondoManager
 
-Última atualização: 2026-09-30
+Última atualização: 2026-10-01
 
 Sistema web de um único condomínio, o Residencial Aurora. Funcionários da administração e moradores cadastrados registram e acompanham ocorrências no mesmo lugar.
 
@@ -17,16 +17,17 @@ E-mail é único. Só pode haver um morador ativo por torre e apartamento. Morad
 
 Usuários autenticados e ativos veem todas as ocorrências do condomínio, com busca e filtro por status e categoria.
 
-| Ação              | Funcionário                    | Morador                        |
-| ----------------- | ------------------------------ | ------------------------------ |
-| Criar ocorrência  | Sim                            | Sim                            |
-| Editar ou excluir | Só a própria, e só se Pendente | Só a própria, e só se Pendente |
-| Avançar status    | Qualquer ocorrência            | Não                            |
-| Comentar          | Qualquer ocorrência            | Só a que ele criou             |
+| Ação               | Funcionário                    | Morador                        |
+| ------------------ | ------------------------------ | ------------------------------ |
+| Criar ocorrência   | Sim                            | Sim                            |
+| Editar ou excluir  | Só a própria, e só se Pendente | Só a própria, e só se Pendente |
+| Avançar status     | Qualquer ocorrência            | Não                            |
+| Comentar           | Qualquer ocorrência            | Qualquer ocorrência            |
+| Excluir comentário | Só o próprio                   | Só o próprio                   |
 
 Uma ocorrência tem identificador visível `OC-` seguido de 8 caracteres, título, descrição, categoria, local em texto livre, autor e data. Categorias fixas: Manutenção, Ruído, Limpeza e Outros. Status só avança: Pendente → Em análise → Resolvido. A exclusão grava `deleted_at` e a ocorrência some da listagem.
 
-Fotos são opcionais, no máximo 5 por ocorrência, até 5 MB, nos tipos jpeg, png, webp ou gif. Comentários são só texto, visíveis para quem vê a ocorrência, e não são editados nem excluídos pela interface.
+Fotos são opcionais, no máximo 5 por ocorrência, até 5 MB, nos tipos jpeg, png, webp ou gif. Comentários são só texto e visíveis para quem vê a ocorrência. O detalhe identifica a ocorrência como "Morador: {nome}" ou "Administração: {nome}", sem unidade. O comentário de morador mostra só o nome; o de funcionário mostra "Administração: {nome}". O autor pode excluir o próprio comentário, com confirmação, em qualquer status. Comentário não é editado.
 
 ## Rotas
 
