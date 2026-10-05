@@ -1,6 +1,6 @@
 begin;
 
-select plan(27);
+select plan(29);
 
 insert into auth.users (
   id,
@@ -316,6 +316,12 @@ select lives_ok(
 set local role authenticated;
 set local request.jwt.claim.sub = '10000000-0000-4000-8000-000000000002';
 
+select is(
+  (select count(*)::integer from public.occurrences),
+  0,
+  'an inactive resident session cannot read occurrences'
+);
+
 select throws_ok(
   $$insert into public.occurrence_comments (occurrence_id, author_profile_id, body)
     values (
@@ -329,6 +335,12 @@ select throws_ok(
 );
 
 reset role;
+
+select is(
+  (select count(*)::integer from public.occurrences where public_id = 'OC-TEST0001'),
+  1,
+  'inactivating a resident preserves their existing occurrence'
+);
 
 insert into public.occurrence_photos (occurrence_id, storage_path, mime_type, size_bytes)
 select
