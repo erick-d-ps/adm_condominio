@@ -1,6 +1,6 @@
 # CondoManager
 
-Última atualização: 2026-09-30
+Última atualização: 2026-10-05
 
 Sistema de gestão de ocorrências do Residencial Aurora. A visão do produto está em [`docs/project-overview.md`](docs/project-overview.md), a arquitetura em [`docs/architecture.md`](docs/architecture.md), a especificação funcional em [`docs/prd/condominio-web.md`](docs/prd/condominio-web.md) e a identidade visual em [`docs/DESIGN.md`](docs/DESIGN.md).
 
@@ -74,14 +74,38 @@ As migrations são aplicadas em ordem pelo prefixo timestamp do Supabase CLI:
 4. Grants e políticas RLS
 5. Bucket privado e políticas do Storage
 
-Execute os testes de banco com o Supabase local ativo:
+### Testes automatizados
+
+Os testes da aplicação usam Jest. Para executar toda a suíte:
 
 ```bash
-npx supabase test db
 npm test
+```
+
+Para executar um arquivo específico ou deixar o Jest em modo de observação:
+
+```bash
+npx jest src/app/_actions/auth.test.ts
+npx jest src/lib/auth/current-user.test.ts
+npx jest src/lib/auth/session-config.test.ts
+npm run test:watch
+```
+
+Os testes de banco usam pgTAP e precisam do Supabase local ativo. Eles verificam RLS, permissões e regras transacionais:
+
+```bash
+npx supabase start
+npx supabase test db
+```
+
+Para fazer as verificações de produção após os testes:
+
+```bash
 npm run build
 npx tsc --noEmit
 ```
+
+No PowerShell, use `npm.cmd` e `npx.cmd` caso a política de execução bloqueie os wrappers `.ps1`.
 
 RLS protege todas as tabelas expostas. A secret key só é usada no servidor para operações administrativas; as consultas normais passam pelo cliente SSR autenticado e pelas políticas do banco.
 

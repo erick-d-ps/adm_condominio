@@ -1,6 +1,6 @@
 # CondoManager
 
-Última atualização: 2026-10-01
+Última atualização: 2026-10-05
 
 Sistema web de um único condomínio, o Residencial Aurora. Funcionários da administração e moradores cadastrados registram e acompanham ocorrências no mesmo lugar.
 
@@ -11,7 +11,7 @@ A especificação completa está em [prd/condominio-web.md](prd/condominio-web.m
 - **Funcionário:** entra com e-mail e senha em `/funcionario/login`. A interface não cadastra funcionários; a conta inicial é provisionada fora da aplicação.
 - **Morador:** entra em `/morador/acesso` com o e-mail cadastrado e a senha inicial definida pelo funcionário (mínimo de 12 caracteres). Não há troca obrigatória no primeiro acesso nem recuperação de senha.
 
-E-mail é único. Só pode haver um morador ativo por torre e apartamento. Morador inativo deixa de passar em `getCurrentAppUser` e em `private.is_app_user()`; as ocorrências que ele já criou continuam na listagem. Inativar libera a unidade para outro morador ativo.
+E-mail é único. Só pode haver um morador ativo por torre e apartamento. A sessão do morador dura 30 dias. Morador inativo deixa de passar em `getCurrentAppUser` e em `private.is_app_user()`, mesmo que ainda tenha uma sessão válida; novas operações protegidas são bloqueadas. As ocorrências que ele já criou continuam na listagem. Inativar libera a unidade para outro morador ativo.
 
 ## O que o produto faz
 
@@ -27,7 +27,9 @@ Usuários autenticados e ativos veem todas as ocorrências do condomínio, com b
 
 Uma ocorrência tem identificador visível `OC-` seguido de 8 caracteres, título, descrição, categoria, local em texto livre, autor e data. Categorias fixas: Manutenção, Ruído, Limpeza e Outros. Status só avança: Pendente → Em análise → Resolvido. A exclusão grava `deleted_at` e a ocorrência some da listagem.
 
-Fotos são opcionais, no máximo 5 por ocorrência, até 5 MB, nos tipos jpeg, png, webp ou gif. Comentários são só texto e visíveis para quem vê a ocorrência. O detalhe identifica a ocorrência como "Morador: {nome}" ou "Administração: {nome}", sem unidade. O comentário de morador mostra só o nome; o de funcionário mostra "Administração: {nome}". O autor pode excluir o próprio comentário, com confirmação, em qualquer status. Comentário não é editado.
+Fotos são opcionais, no máximo 5 por ocorrência, até 5 MB, nos tipos jpeg, png, webp ou gif. Comentários são só texto e visíveis para quem vê a ocorrência. Funcionários e moradores ativos podem comentar qualquer ocorrência que não tenha sido excluída. Cada usuário pode excluir o próprio comentário, com confirmação, em qualquer status; comentários não podem ser editados.
+
+O detalhe identifica a ocorrência como "Morador: {nome}" ou "Administração: {nome}", sem unidade. O comentário de morador mostra só o nome; o de funcionário mostra "Administração: {nome}".
 
 ## Rotas
 
